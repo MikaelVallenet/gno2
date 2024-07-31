@@ -215,6 +215,14 @@ func assertAssignableTo(xt, dt Type, autoNative bool) {
 	}
 }
 
+func checkValConstType(d *ValueDecl) {
+	for _, vx := range d.Values {
+		if _, ok := vx.(*BasicLitExpr); !ok {
+			panic("const type should be a basic literal")
+		}
+	}
+}
+
 // checkValDefineMismatch checks for mismatch between the number of variables and values in a ValueDecl or AssignStmt.
 func checkValDefineMismatch(n Node) {
 	var (
