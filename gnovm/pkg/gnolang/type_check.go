@@ -216,6 +216,10 @@ func assertAssignableTo(xt, dt Type, autoNative bool) {
 }
 
 func checkValConstType(d *ValueDecl) {
+	// no type specified, check of values needed
+	if d.Type == nil {
+		return
+	}
 	for _, vx := range d.Values {
 		if _, ok := vx.(*BasicLitExpr); !ok {
 			panic("const type should be a basic literal")
