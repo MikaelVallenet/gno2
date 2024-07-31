@@ -461,11 +461,6 @@ func Preprocess(store Store, ctx BlockNode, n Node) Node {
 					d := n.(Decl)
 					if cd, ok := d.(*ValueDecl); ok {
 						checkValDefineMismatch(cd)
-						if cd.Const {
-							if !isConstTypeBasic(cd) {
-								panic("const type should be a basic literal")
-							}
-						}
 					}
 					// recursively predefine dependencies.
 					d2, ppd := predefineNow(store, last, d)
@@ -3388,7 +3383,6 @@ func tryPredefine(store Store, last BlockNode, d Decl) (un Name) {
 				return
 			}
 		}
-
 		for i := 0; i < len(d.NameExprs); i++ {
 			nx := &d.NameExprs[i]
 			if nx.Name == blankIdentifier {
@@ -3978,13 +3972,4 @@ func SaveBlockNodes(store Store, fn *FileNode) {
 		}
 		return n, TRANS_CONTINUE
 	})
-}
-
-func isConstTypeBasic(d *ValueDecl) bool {
-	for _, vx := range d.Values {
-		if _, ok := vx.(*BasicLitExpr); !ok {
-			return false
-		}
-	}
-	return true
 }
